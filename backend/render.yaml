@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: rag-groq-backend
+    runtime: python
+    plan: starter
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false          # set manually in the Render dashboard — never in git
+      - key: GROQ_MODEL
+        value: openai/gpt-oss-120b
+      - key: FRONTEND_URL
+        sync: false          # set to your Vercel URL once you have it
+    disk:
+      name: vector-db
+      mountPath: /opt/render/project/src/vector_db
+      sizeGB: 1
